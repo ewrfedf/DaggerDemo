@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.daggerdemo;
+package com.example.dagger.activitygraphs.module;
 
 import android.content.Context;
 import android.location.LocationManager;
+
+import com.example.dagger.activitygraphs.DemoApplication;
+import com.example.dagger.activitygraphs.DemoBaseActivity;
+import com.example.dagger.activitygraphs.ui.AboutFragment;
+import com.example.dagger.activitygraphs.ui.HomeActivity;
+import com.example.dagger.activitygraphs.ui.HomeFragment;
 
 import javax.inject.Singleton;
 
@@ -29,22 +35,28 @@ import static android.content.Context.LOCATION_SERVICE;
  * A module for Android-specific dependencies which require a {@link Context} or
  * {@link android.app.Application} to create.
  */
-@Module(library = true)
+@Module(
+        injects = {
+                AboutFragment.class,
+                HomeActivity.class,
+                HomeFragment.class,
+                DemoBaseActivity.class
+        },
+        library = true
+)
 public class AndroidModule {
+
     private final DemoApplication application;
 
     public AndroidModule(DemoApplication application) {
         this.application = application;
     }
 
-    /**
-     * Allow the application context to be injected but require that it be annotated with
-     * {@link ForApplication @Annotation} to explicitly differentiate it from an activity context.
-     */
+
     @Provides
     @Singleton
     @ForApplication
-    Context provideApplicationContext() {
+    Context provideApplication() {
         return application;
     }
 
@@ -53,4 +65,6 @@ public class AndroidModule {
     LocationManager provideLocationManager() {
         return (LocationManager) application.getSystemService(LOCATION_SERVICE);
     }
+
+
 }

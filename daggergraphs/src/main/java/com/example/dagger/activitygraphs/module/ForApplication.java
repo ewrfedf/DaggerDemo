@@ -13,32 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.daggerdemo;
+package com.example.dagger.activitygraphs.module;
 
-import android.app.Application;
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
 
-import java.util.Arrays;
-import java.util.List;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import dagger.ObjectGraph;
-
-public class DemoApplication extends Application {
-  private ObjectGraph graph;
-
-  @Override public void onCreate() {
-    super.onCreate();
-
-    graph = ObjectGraph.create(getModules().toArray());
-  }
-
-  protected List<Object> getModules() {
-    return Arrays.asList(//需要构建的对象
-        new AndroidModule(this),
-        new DemoModule()
-    );
-  }
-
-  public void inject(Object object) {
-    graph.inject(object);
-  }
+@Qualifier @Retention(RUNTIME)
+public @interface ForApplication {
 }
